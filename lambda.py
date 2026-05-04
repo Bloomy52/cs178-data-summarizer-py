@@ -2,8 +2,8 @@
 import os
 import json
 import csv
-import creds
 import hashlib
+from dotenv import load_dotenv, dotenv_values
 from io import BytesIO
 
 # This is the lambda Python file which is executed by Lambda
@@ -15,6 +15,11 @@ def lambda_handler(event, context):
     AWS calls this automatically when an S3 object-created event fires.
     The 'event' dict contains details about what was uploaded.
     """
+    # Load Environment Variables
+    load_dotenv()
+    AWS_REGION = os.environ["AWS_REGION"]
+    SUMMARY_BUCKET = os.environ["SUMMARY_BUCKET"]
+    AWS_BEARER_TOKEN_BEDROCK = os.environ["AWS_BEDROCK_KEY"]
 
     # ── Step 1: Extract the bucket name and filename from the trigger event ───
     # When S3 triggers Lambda, the event contains a 'Records' list.
@@ -26,12 +31,43 @@ def lambda_handler(event, context):
 
     print(f"Triggered by upload: s3://{source_bucket}/{filename}")
 
-    # ── Step 2: Open the prompt.txt file ──────────────
-    with open("prompt.txt", "r") as infile:
-       prompt = infile.read()
+    # ── Step 2: Create the prompt for Bedrock: ──────────────
+    # Use this to clearly define the task and job needed by the model
+    task_summary = f"""
+    ## Task Summary:
+    {{Review the attached CSV and summarize what the data covers, including anything notable or unusual.}}
+    """
+
+    # Use this to provide contextual information related to the task
+    context_information = f"""
+    ## Context Information:
+    - {{Standard CSV format with headers in the first row}}
+    - {{Columns may include numbers, text, or dates}}
+    """
+
+    # Use this to provide any model instructions that you want model to adhere to
+    model_instructions = f"""
+    ## Model Instructions:
+    - {{Explain what each column represents and flag anything out of the ordinary}}
+    - {{Base all observations only on the data provided}}
+    """
+
+    # Use this to provide response style and formatting guidance
+    response_style = f"""
+    ## Response style and format requirements:
+    - {{Write as if explaining the data to a coworker}}
+    - {{Use three sections: overview, column breakdown, and key takeaways}}
+    - {{Limit the response to 300 words or less}}
+    """
+
+    # Concatenate to final prompt
+    final_prompt = f"""{task_summary}
+    {context_information}
+    {model_instructions}
+    {response_style}"""
 
     # ── Step 3: Open the csv file from S3 and upload to Bedrock ──────────────
-    bedrock = boto3.client("bedrock-runtime", region_name="us-east-1")
+    bedrock = boto3.client("bedrock-runtime", region_name=AWS_REGION)
 
     # Open the Uploaded CSV file
     response = bedrock.converse(
@@ -42,10 +78,13 @@ def lambda_handler(event, context):
                 {"document": {
                     "format": "csv",
                     "name": filename,
-                    "source": {"s3": f"s3://{source_bucket}/{filename}"}
+                    "source": {"s3Location":{
+                        "uri":  f"s3://{source_bucket}/{filename}"
+                        }
+                    }
                 }
                 },
-                {"text": prompt}
+                {"text": final_prompt}
             ]
         }]
     )
@@ -65,17 +104,17 @@ def lambda_handler(event, context):
 
     # ── Step 6: Upload the result to the processed bucket ─────────────────────
     s3.put_object(
-        Bucket=creds.S3_SUMMARY_BUCKET,
+        Bucket=SUMMARY_BUCKET,
         Key=txt_filename,           # same filename, different bucket
         Body=buffer,
         ContentType=f"txt/{file_format.lower}",
     )
 
-    print(f"Processed image saved to: s3://{creds.S3_SUMMARY_BUCKET}/{txt_filename}")
+    print(f"Summary saved to: s3://{SUMMARY_BUCKET}/{txt_filename}")
 
     return {
         "statusCode": 200,
-        "body": f"Summarized {filename} and saved to {creds.S3_SUMMARY_BUCKET}"
+        "body": f"Summarized {filename} and saved to {SUMMARY_BUCKET}"
     }
 
 

@@ -21,6 +21,8 @@ def lambda_handler(event, context):
     SUMMARY_BUCKET = os.environ["SUMMARY_BUCKET"]
     AWS_BEARER_TOKEN_BEDROCK = os.environ["AWS_BEDROCK_KEY"]
 
+    MODEL_ID = "global.amazon.nova-2-lite-v1:0"
+
     # ── Step 1: Extract the bucket name and filename from the trigger event ───
     # When S3 triggers Lambda, the event contains a 'Records' list.
     # Each record describes one file that was uploaded.
@@ -32,6 +34,7 @@ def lambda_handler(event, context):
     print(f"Triggered by upload: s3://{source_bucket}/{filename}")
 
     # ── Step 2: Create the prompt for Bedrock: ──────────────
+    # Prompt was adapted from the official documentation
     # Use this to clearly define the task and job needed by the model
     task_summary = f"""
     ## Task Summary:
@@ -71,7 +74,7 @@ def lambda_handler(event, context):
 
     # Open the Uploaded CSV file
     response = bedrock.converse(
-        modelId="global.amazon.nova-2-lite-v1:0",
+        modelId=MODEL_ID,
         messages=[{
             "role": "user",
             "content": [

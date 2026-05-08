@@ -1,9 +1,8 @@
 ﻿import boto3
 import os
-import json
-import csv
-import hashlib
-from dotenv import load_dotenv, dotenv_values
+from google import genai
+from google.genai import types
+from dotenv import load_dotenv
 from io import BytesIO
 
 # This is the lambda Python file which is executed by Lambda

@@ -19,8 +19,13 @@ def lambda_handler(event, context):
     AWS_REGION = os.environ["AWS_REGION"]
     SUMMARY_BUCKET = os.environ["SUMMARY_BUCKET"]
     AWS_BEARER_TOKEN_BEDROCK = os.environ["AWS_BEDROCK_KEY"]
+    PROJECT_ID = os.environ["GOOGLE_CLOUD_PROJECT"]
 
-    MODEL_ID = "global.amazon.nova-2-lite-v1:0"
+    MODEL_ID = "gemini-3-flash-preview"
+
+    LOCATION = "global"
+
+    client = genai.Client(enterprise=True, project=PROJECT_ID, location=LOCATION)
 
     # ── Step 1: Extract the bucket name and filename from the trigger event ───
     # When S3 triggers Lambda, the event contains a 'Records' list.
@@ -72,27 +77,19 @@ def lambda_handler(event, context):
     bedrock = boto3.client("bedrock-runtime", region_name=AWS_REGION)
 
     # Open the Uploaded CSV file
-    response = bedrock.converse(
-        modelId=MODEL_ID,
-        messages=[{
-            "role": "user",
-            "content": [
-                {"document": {
-                    "format": "csv",
-                    "name": filename,
-                    "source": {"s3Location":{
-                        "uri":  f"s3://{source_bucket}/{filename}"
-                        }
-                    }
-                }
-                },
-                {"text": final_prompt}
-            ]
-        }]
+    response = client.models.generate_content(
+        model=MODEL_ID,
+        contents=[
+            types.Part.from_uri(
+                file_uri="gs://cloud-samples-data/generative-ai/pdf/1706.03762v7.pdf",
+                mime_type="application/pdf",
+            ),
+            "Summarize the document.",
+        ]
     )
 
     # ── Step 4: Write the summary to a new text file  ─────────────
-    output = response["output"]["message"]["content"][0]["text"]
+    output = response.text
 
     with open(f"./summary_temps/{filename}.txt", "w") as outfile:
         outfile.write(output)

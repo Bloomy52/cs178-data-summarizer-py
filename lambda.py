@@ -18,7 +18,6 @@ def lambda_handler(event, context):
     load_dotenv()
     AWS_REGION = os.environ["AWS_REGION"]
     SUMMARY_BUCKET = os.environ["SUMMARY_BUCKET"]
-    AWS_BEARER_TOKEN_BEDROCK = os.environ["AWS_BEDROCK_KEY"]
     PROJECT_ID = os.environ["GOOGLE_CLOUD_PROJECT"]
 
     MODEL_ID = "gemini-3-flash-preview"

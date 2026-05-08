@@ -73,7 +73,6 @@ def lambda_handler(event, context):
     {response_style}"""
 
     # ── Step 3: Open the csv file from S3 and upload to Bedrock ──────────────
-    bedrock = boto3.client("bedrock-runtime", region_name=AWS_REGION)
 
     # Open the Uploaded CSV file
     response = client.models.generate_content(
@@ -83,7 +82,7 @@ def lambda_handler(event, context):
                 file_uri="gs://cloud-samples-data/generative-ai/pdf/1706.03762v7.pdf",
                 mime_type="application/pdf",
             ),
-            "Summarize the document.",
+            final_prompt,
         ]
     )
 

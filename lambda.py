@@ -118,6 +118,3 @@ def lambda_handler(event, context):
         "statusCode": 200,
         "body": f"Summarized {filename} and saved to {SUMMARY_BUCKET}"
     }
-
-
-

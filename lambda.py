@@ -64,6 +64,7 @@ def lambda_handler(event, context):
     - {{Write as if explaining the data to a coworker}}
     - {{Use three sections: overview, column breakdown, and key takeaways}}
     - {{Limit the response to 300 words or less}}
+    - {{Use Proper Markdown Formatting, including headings and bullet points where appropriate}}
     """
 
     # Concatenate to final prompt

@@ -64,6 +64,14 @@ Install the required dependencies using pip:
 pip install -r requirements.txt
 ```
 
+Create the `creds.py` file in the project directory. Add the following variables to the `creds.py` file.
+```python
+# creds.py
+AWS_REGION = "Your AWS Region (e.g., us-east-1)"
+S3_CSV_BUCKET = "Your S3 bucket name for CSV files (e.g., <your-initials>-data-summarizer-csv)"
+S3_SUMMARY_BUCKET = "Your S3 bucket name for summaries (e.g., <your-initials>-data-summarizer-output)"
+```
+
 Run the Python script that runs the CLI:
 ```bash
 python cli.py
@@ -74,4 +82,5 @@ python3 cli.py
 ```
 
 You will be prompted to enter the path of your CSV file. This CLI only takes CSV files as an input.
+
 

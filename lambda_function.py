@@ -24,7 +24,7 @@ def lambda_handler(event, context):
 
     LOCATION = "global"
 
-    client = genai.Client(enterprise=True, project=PROJECT_ID, location=LOCATION)
+    client = genai.Client(vertexai=True, project=PROJECT_ID, location=LOCATION)
 
     # ── Step 1: Extract the bucket name and filename from the trigger event ───
     # When S3 triggers Lambda, the event contains a 'Records' list.

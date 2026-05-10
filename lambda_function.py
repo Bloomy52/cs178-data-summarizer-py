@@ -4,6 +4,7 @@ from google import genai
 from google.genai import types
 from google.oauth2 import service_account
 from dotenv import load_dotenv
+import json
 from io import BytesIO
 
 # This is the lambda Python file which is executed by Lambda
@@ -17,6 +18,9 @@ def lambda_handler(event, context):
     """
     # Load Environment Variables
     load_dotenv()
+    sa_json = os.environ["GOOGLE_SERVICE_ACCOUNT_JSON"]
+    sa_info = json.loads(sa_json)
+    creds = service_account.Credentials.from_service_account_info(sa_info)
     AWS_REGION = os.environ["AWS_REGION"]
     SUMMARY_BUCKET = os.environ["SUMMARY_BUCKET"]
     PROJECT_ID = os.environ["GOOGLE_CLOUD_PROJECT"]

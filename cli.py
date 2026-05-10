@@ -1,7 +1,6 @@
 ﻿import boto3
 import os
 import creds
-import csv
 import time
 
 # This is the initial CLI which uploads the file to S3 and takes the summary output from

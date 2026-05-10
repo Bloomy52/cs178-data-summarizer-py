@@ -80,8 +80,8 @@ def lambda_handler(event, context):
         model=MODEL_ID,
         contents=[
             types.Part.from_uri(
-                file_uri="gs://cloud-samples-data/generative-ai/pdf/1706.03762v7.pdf",
-                mime_type="application/pdf",
+                file_uri="s3://{source_bucket}/{filename}",
+                mime_type="application/csv",
             ),
             final_prompt,
         ]

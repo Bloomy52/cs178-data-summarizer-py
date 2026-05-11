@@ -24,7 +24,7 @@ def lambda_handler(event, context):
         sa_info,
         scopes=["https://www.googleapis.com/auth/cloud-platform"],
     )
-    AWS_REGION = os.environ["AWS_REGION"]
+
     SUMMARY_BUCKET = os.environ["SUMMARY_BUCKET"]
     PROJECT_ID = os.environ["GOOGLE_CLOUD_PROJECT"]
 

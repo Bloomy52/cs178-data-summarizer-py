@@ -63,6 +63,7 @@ def lambda_handler(event, context):
     ## Context Information:
     - {{Standard CSV format with headers in the first row}}
     - {{Columns may include numbers, text, or dates}}
+    - {{Treat all dates in the data file as a recorded value and not predictions}}
     """
 
     # Use this to provide any model instructions that you want model to adhere to

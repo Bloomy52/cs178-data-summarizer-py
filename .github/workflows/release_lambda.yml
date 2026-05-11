@@ -1,0 +1,42 @@
+name: Build and Release Lambda ZIP
+
+on:
+  push:
+    paths:
+      - 'lambda_function.py'
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set release version
+        id: version
+        run: echo "tag=v$(date -u +'%Y%m%d%H%M%S')-${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+
+      - name: Create build directory
+        run: mkdir -p build
+
+      - name: Build Lambda package
+        run: |
+          docker run --rm \
+            --entrypoint /bin/bash \
+            -v "$PWD":/var/task \
+            public.ecr.aws/lambda/python:3.12 \
+            -lc "pip install google-genai python-dotenv -t build && cp lambda_function.py build/ && cd build && zip -r ../lambda.zip ."
+
+      - name: Create GitHub release and upload asset
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: ${{ steps.version.outputs.tag }}
+          files: lambda.zip
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

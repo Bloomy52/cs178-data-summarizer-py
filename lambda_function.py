@@ -20,7 +20,10 @@ def lambda_handler(event, context):
     load_dotenv()
     sa_json = os.environ["GOOGLE_SERVICE_ACCOUNT_JSON"]
     sa_info = json.loads(sa_json)
-    creds = service_account.Credentials.from_service_account_info(sa_info)
+    creds = service_account.Credentials.from_service_account_info(
+        sa_info,
+        scopes=["https://www.googleapis.com/auth/cloud-platform"],
+    )
     AWS_REGION = os.environ["AWS_REGION"]
     SUMMARY_BUCKET = os.environ["SUMMARY_BUCKET"]
     PROJECT_ID = os.environ["GOOGLE_CLOUD_PROJECT"]
@@ -42,6 +45,9 @@ def lambda_handler(event, context):
     record = event["Records"][0]
     source_bucket = record["s3"]["bucket"]["name"]
     filename = record["s3"]["object"]["key"]
+
+    local_path = f"/tmp/{filename}.csv"
+    s3.download_file(source_bucket, filename, local_path)
 
     print(f"Triggered by upload: s3://{source_bucket}/{filename}")
 
@@ -73,7 +79,7 @@ def lambda_handler(event, context):
     - {{Write as if explaining the data to a coworker}}
     - {{Use three sections: overview, column breakdown, and key takeaways}}
     - {{Limit the response to 300 words or less}}
-    - {{Use Proper Markdown Formatting, including headings and bullet points where appropriate}}
+    - {{Use plain text only — no Markdown. Bullets are to be noted with '-'. No headings.}}
     """
 
     # Concatenate to final prompt
@@ -85,13 +91,14 @@ def lambda_handler(event, context):
     # ── Step 3: Open the csv file from S3 and upload to Bedrock ──────────────
 
     # Open the Uploaded CSV file
+
+    with open(local_path, "r", encoding="utf-8", errors="replace") as infile:
+        csv_text = infile.read()
+
     response = client.models.generate_content(
         model=MODEL_ID,
         contents=[
-            types.Part.from_uri(
-                file_uri="s3://{source_bucket}/{filename}",
-                mime_type="application/csv",
-            ),
+            csv_text,
             final_prompt,
         ]
     )
@@ -99,12 +106,13 @@ def lambda_handler(event, context):
     # ── Step 4: Write the summary to a new text file  ─────────────
     output = response.text
 
-    with open(f"./summary_temps/{filename}.txt", "w") as outfile:
+    summary_local_path = f"/tmp/{filename}.txt"
+    with open(summary_local_path, "w") as outfile:
         outfile.write(output)
 
 
     # ── Step 5: Save the txt summary back into a BytesIO buffer ─────────────
-    buffer = BytesIO()
+    buffer = BytesIO(output.encode("utf-8"))
     file_format = "txt"
     txt_filename = f"{filename}.txt"
 
@@ -114,7 +122,7 @@ def lambda_handler(event, context):
         Bucket=SUMMARY_BUCKET,
         Key=txt_filename,           # same filename, different bucket
         Body=buffer,
-        ContentType=f"txt/{file_format.lower}",
+        ContentType="text/plain; charset=utf-8",
     )
 
     print(f"Summary saved to: s3://{SUMMARY_BUCKET}/{txt_filename}")

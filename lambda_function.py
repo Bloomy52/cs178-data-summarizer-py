@@ -91,7 +91,6 @@ def lambda_handler(event, context):
     # ── Step 3: Open the csv file from S3 and upload to Bedrock ──────────────
 
     # Open the Uploaded CSV file
-
     with open(local_path, "r", encoding="utf-8", errors="replace") as infile:
         csv_text = infile.read()
 

@@ -17,8 +17,6 @@ def upload_to_s3(filepath, bucket, key):
     s3 = boto3.client('s3', region_name=creds.AWS_REGION)
     s3.upload_file(filepath, bucket, key)
 
-    # TODO: Finish adding the code to upload the CSV to S3
-    # ...
     return None
 
 
@@ -32,9 +30,9 @@ def display_bedrock_summary(bucket, filename):
 
     s3 = boto3.client('s3', region_name=creds.AWS_REGION)
 
-    s3.download_file(bucket, f"{filename}.txt", f'./summary_downloads/{filename}.txt')
+    s3.download_file(bucket, f"{filename}.txt", f'./summaries/{filename}.txt')
 
-    with open(f"./summaries/{filename}.txt", 'r') as infile:
+    with open(f"./summaries/{filename}.txt", 'r', encoding="utf-8") as infile:
         summary = infile.read()
 
     print(summary)

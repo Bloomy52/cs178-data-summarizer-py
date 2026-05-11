@@ -28,7 +28,6 @@ def lambda_handler(event, context):
     SUMMARY_BUCKET = os.environ["SUMMARY_BUCKET"]
     PROJECT_ID = os.environ["GOOGLE_CLOUD_PROJECT"]
     MODEL_ID = "gemini-3-flash-preview"
-
     LOCATION = "global"
 
     client = genai.Client(

@@ -64,6 +64,7 @@ def lambda_handler(event, context):
     - {{Standard CSV format with headers in the first row}}
     - {{Columns may include numbers, text, or dates}}
     - {{Treat all dates in the data file as a recorded value and not predictions}}
+    - {{The dataset may cover any domain — do not assume a specific subject area}}
     """
 
     # Use this to provide any model instructions that you want model to adhere to
@@ -71,7 +72,8 @@ def lambda_handler(event, context):
     ## Model Instructions:
     - {{Explain what each column represents and flag anything out of the ordinary}}
     - {{Base all observations only on the data provided}}
-    - {{Use historical context and significant events for analysis to help explain data}}
+    - {{Only use historical context or external knowledge where it clearly and directly explains a specific data pattern — do not force connections}}
+    - {{If no external context is relevant, rely entirely on what the data shows}}
     """
 
     # Use this to provide response style and formatting guidance

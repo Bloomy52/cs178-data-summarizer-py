@@ -36,6 +36,7 @@ def lambda_handler(event, context):
         location=LOCATION,
         credentials=creds,
     )
+
     # ── Step 1: Extract the bucket name and filename from the trigger event ───
     # When S3 triggers Lambda, the event contains a 'Records' list.
     # Each record describes one file that was uploaded.

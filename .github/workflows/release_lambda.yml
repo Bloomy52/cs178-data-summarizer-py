@@ -29,8 +29,7 @@ jobs:
             --entrypoint /bin/bash \
             -v "$PWD":/var/task \
             public.ecr.aws/lambda/python:3.12 \
-            -lc "pip install google-genai python-dotenv -t build && cp lambda_function.py build/ && cd build && zip -r ../lambda.zip ."
-
+            -lc "yum -y install zip && pip install google-genai python-dotenv -t build && cp lambda_function.py build/ && cd build && zip -r ../lambda.zip ."
       - name: Create GitHub release and upload asset
         uses: softprops/action-gh-release@v2
         with:

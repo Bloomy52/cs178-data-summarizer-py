@@ -70,6 +70,7 @@ def lambda_handler(event, context):
     ## Model Instructions:
     - {{Explain what each column represents and flag anything out of the ordinary}}
     - {{Base all observations only on the data provided}}
+    - {{Use historical context and significant events for analysis to help explain data}}
     """
 
     # Use this to provide response style and formatting guidance

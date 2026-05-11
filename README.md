@@ -40,6 +40,7 @@ the data using Google's Vertex AI (this is due to AWS blocking my Bedrock access
 
 
 4. **AWS Lambda** Setup: You will need to upload the code, set environment variables, and add triggers to your Lambda function. You can do this in the AWS Console by doing the following steps:
+
 > 1. Go to the GitHub Repository Releases page and download the latest lambda.zip file.
 > 2. Uploading Code: In the Lambda function you just created, click "Update" and then "Update from a .zip file" and upload the lambda.zip file you downloaded from the GitHub Repository. Click "Save".
 > 3. Adding S3 Trigger: In the Lambda function, click on "Add trigger". Click on "Select a source", scroll down and select "S3". Select the bucket you want as the trigger. Check the "Reverse invocation" notice and click "Add".

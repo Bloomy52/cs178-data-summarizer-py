@@ -1,0 +1,23 @@
+Overview
+
+This dataset provides a daily log of transit usage at a single location, the Addison-North Main station, identified by ID 41420. The records span over 25 years, beginning in January 2001 and continuing through February 2026. The data tracks volume fluctuations across different day types, revealing clear seasonal cycles and significant one-off events that impacted how many people used this specific stop.
+
+Column Breakdown
+
+- station_id: A unique five-digit numeric code (41420) that identifies the specific transit station.
+- stationname: The descriptive name of the stop, which is "Addison-North Main" for the entire set.
+- date: The specific calendar day for the ridership count, provided in MM/DD/YYYY format.
+- daytype: A single-letter code representing the schedule type. "W" indicates typical weekdays, "A" represents Saturdays, and "U" stands for Sundays or holidays.
+- rides: The total count of passenger boardings recorded for that day.
+
+Key Takeaways
+
+- Volatility and Event Spikes: Daily ridership is highly variable. While a standard weekday often sees between 5,000 and 7,000 rides, there are extreme surges where volume exceeds 20,000 or even 30,000. Notably, on October 29, 2016, ridership peaked at 33,615. This specific surge corresponds to the Chicago Cubs' World Series run, as this station serves Wrigley Field. Similar high-volume patterns appear every year during the spring and summer months, likely tied to the baseball season.
+
+- The 2020 Collapse: There is a massive, sudden decline starting in mid-March 2020. Volume dropped from 5,925 on March 9 to just 512 by March 24. This reflects the impact of the COVID-19 pandemic. Unlike previous years where ridership recovered seasonally, the post-2020 numbers remain suppressed for an extended period, only beginning to show a slow, partial climb toward older averages by 2024 and 2025.
+
+- Day Type Patterns: Historically, weekdays (W) show the highest consistent traffic, followed by Saturdays (A), with Sundays (U) typically being the quietest. However, during major events or holidays, these patterns invert. For example, some Sundays during peak season see higher traffic than winter weekdays.
+
+- Data Anomalies: There are several instances of unusually low numbers that suggest station closures or service interruptions. For instance, on June 13, 2001, only 128 rides were recorded, and on March 30, 2019, the count dropped to 40, which are both significant outliers compared to surrounding dates.
+
+- Long-term Trends: Before 2020, the station saw a gradual increase in baseline ridership over the decades. The data recorded for 2025 and early 2026 suggests the station is still in a phase of re-stabilizing its volume following the multi-year disruption that began in 2020.

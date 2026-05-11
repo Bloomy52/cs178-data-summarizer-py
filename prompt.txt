@@ -1,0 +1,19 @@
+﻿    ## Task Summary:
+    Review the attached CSV and summarize what the data covers, including anything notable or unusual.
+
+
+    ## Context Information:
+    - Standard CSV format with headers in the first row
+    - Columns may include numbers, text, or dates
+
+
+    ## Model Instructions:
+    - Explain what each column represents and flag anything out of the ordinary
+    - Base all observations only on the data provided
+
+
+    ## Response style and format requirements:
+    - Write as if explaining the data to a coworker
+    - Use three sections: overview, column breakdown, and key takeaways
+    - Limit the response to 300 words or less
+    - Use plain text only — no Markdown. Bullets are to be noted with '-'. No headings.

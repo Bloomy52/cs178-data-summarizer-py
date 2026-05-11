@@ -16,7 +16,6 @@ def lambda_handler(event, context):
     AWS calls this automatically when an S3 object-created event fires.
     The 'event' dict contains details about what was uploaded.
     """
-
     # Load Environment Variables
     load_dotenv()
     sa_json = os.environ["GOOGLE_SERVICE_ACCOUNT_JSON"]

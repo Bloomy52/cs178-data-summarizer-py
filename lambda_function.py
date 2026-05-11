@@ -79,7 +79,7 @@ def lambda_handler(event, context):
     ## Response style and format requirements:
     - {{Write as if explaining the data to a coworker}}
     - {{Use three sections: overview, column breakdown, and key takeaways}}
-    - {{Limit the response to 300 words or less}}
+    - {{Limit the response to 500 words or less}}
     - {{Use plain text only — no Markdown. Bullets are to be noted with '-'. No headings.}}
     """
 

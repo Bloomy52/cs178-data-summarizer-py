@@ -53,8 +53,8 @@ the data using Google's Vertex AI (this is due to AWS blocking my Bedrock access
 
 Clone the GitHub Repository and navigate to the project directory using the following commands:
 ```bash
-git clone https://www.github.com/Bloomy52/bedrock-data-summarizer-py.git
-cd bedrock-data-summarizer-py
+git clone https://github.com/Bloomy52/cs178-data-summarizer-py.git
+cd cs178-data-summarizer-py
 ```
 
 Install the required dependencies using pip:

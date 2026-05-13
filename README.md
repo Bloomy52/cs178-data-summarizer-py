@@ -89,13 +89,8 @@ For this example, we will use the `CTA_RedLine_Ridership_Addison-NorthMain-Wrigl
 python cli.py
 ```
 2. Paste the path of the CSV file:
-If using macOS or Linux paste the following path:
 ```text
-"./example/CTA_RedLine_Ridership_Addison-NorthMain_WrigleyField.csv"
-```
-If using Windows, paste the following path:
-```text
-".\example\CTA_RedLine_Ridership_Addison-NorthMain_WrigleyField.csv"
+example/CTA_RedLine_Ridership_Addison-NorthMain-WrigleyField.csv
 ```
 3. 30 seconds later, the summary will be printed in the console and a text file with the summary will be output to the `summaries` folder. 
 4. The output below is from when I ran it on the example CSV file, your output may differ. You can find this exact output in the `example` folder.:

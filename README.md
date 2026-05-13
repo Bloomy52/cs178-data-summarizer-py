@@ -79,7 +79,7 @@ or if your machine uses `python3` instead of `python`:
 python3 cli.py
 ```
 
-You will be prompted to enter the path of your CSV file. This CLI only takes CSV files as an input.
+You will be prompted to enter the path of your CSV file. This CLI only takes CSV files as an input.  
 *Note: You cannot have spaces in the CSV file name. The program will fail otherwise.*
 
 ## Example:
